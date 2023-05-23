@@ -1,0 +1,109 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type OrganizationModel {
+  id: String
+  name: String
+  email: String
+  phone: String
+  address: String
+  user: [UserModel!]
+}
+
+type UserModel {
+  id: String
+  name: String
+  email: String
+  password: String
+  organizationId: [String!]
+  organization: [OrganizationModel!]
+}
+
+type PostModel {
+  id: String
+  title: String
+  content: String
+  userId: String
+  user: UserModel
+}
+
+type ProductModel {
+  id: String
+  name: String
+  price: Float
+  category: [Category!]!
+  userId: String
+  user: UserModel
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+enum Category {
+  ELECTRONICS
+  BOOKS
+  CLOTHING
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  getusers(id: String!): UserModel!
+  getOrganizations(id: String!): [OrganizationModel!]!
+  posts: [PostModel!]!
+  getProducts: [ProductModel!]!
+  getCategoryFilter(filter: CategoryFilter): [ProductModel!]!
+}
+
+input CategoryFilter {
+  search: String
+  category: Category
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type Mutation {
+  createUser(data: UserDto!): UserModel!
+  updateUser(id: String!, input: UserDto!): UserModel!
+  deleteuser(id: String!): UserModel!
+  createOrganization(data: OrganizationDto!): OrganizationModel!
+  updateOrganization(id: String!, input: OrganizationDto!): OrganizationModel!
+  deleteorganization(id: String!): OrganizationModel!
+  createPost(data: PostDto!): PostModel!
+  updatePost(id: String!, input: PostDto!): PostModel!
+  deletePost(id: String!): PostModel!
+  createProduct(data: ProductDto!): ProductModel!
+  updateProduct(id: String!, input: ProductDto!): ProductModel!
+  deleteProduct(id: String!): ProductModel!
+}
+
+input UserDto {
+  name: String
+  password: String
+  email: String
+  organizationId: [String!]!
+}
+
+input OrganizationDto {
+  name: String
+  email: String
+  phone: String
+  address: String
+  userId: String
+}
+
+input PostDto {
+  title: String
+  content: String
+  userId: String
+}
+
+input ProductDto {
+  name: String
+  price: Float
+  category: [Category!]
+  userId: String
+}
