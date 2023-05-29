@@ -76,3 +76,46 @@ enum category {
   BOOKS
   CLOTHING
 }
+
+
+model skills {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String?
+  archived  Boolean    @default(false)
+  createdAt DateTime   @default(now()) @db.Date
+  updatedAt DateTime   @updatedAt
+  tagsId String[] @default([]) @db.ObjectId
+  tags   tags[]   @relation(fields: [tagsId], references: [id])
+  employeeId String[] @default([]) @db.ObjectId
+  employee   employee[]   @relation(fields: [employeeId], references: [id])
+}
+
+
+model tags {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  name     String?
+  archived  Boolean    @default(false)
+  createdAt DateTime   @default(now()) @db.Date
+  updatedAt DateTime   @updatedAt
+  skillsId String[] @default([]) @db.ObjectId
+  skills   skills[]   @relation(fields: [skillsId], references: [id])
+  employeeId String[] @default([]) @db.ObjectId
+  employee   employee[]   @relation(fields: [employeeId], references: [id])
+}
+
+
+model employee{
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  name     String?
+  phone    String?
+  email    String?
+  DOJ      DateTime?
+  DOB      DateTime?
+  archived  Boolean    @default(false)
+  createdAt DateTime   @default(now()) @db.Date
+  updatedAt DateTime   @updatedAt
+  skillsId String[] @default([]) @db.ObjectId
+  skills   skills[]   @relation(fields: [skillsId], references: [id])
+  tagsId String[] @default([]) @db.ObjectId
+  tags   tags[]   @relation(fields: [tagsId], references: [id])
+}

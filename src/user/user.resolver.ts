@@ -26,6 +26,11 @@ export class UserResolver {
   async deleteuser(@Args('id') id: string): Promise<UserModel> {
     return await this.userService.delete(id);
   }
+
+  @Query(() =>String)
+  async stringReturnType(@Args('id') id: string): Promise<string>{
+    return await this.userService.stringReturnType(id)
+  }
 }
 
 

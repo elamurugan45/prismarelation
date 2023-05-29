@@ -9,6 +9,9 @@ import { PostModule } from './post/post.module';
 import { ProductModule } from './product/product.module';
 import { Category } from './product/product.constant';
 import { registerEnumType } from '@nestjs/graphql';
+import { employeeModule } from './employee/employee.module';
+import { tagsModule } from './tags/tags.module';
+import { skillsModule } from './skills/skills.module';
 
 registerEnumType(Category, {
   name: 'Category'
@@ -17,6 +20,6 @@ registerEnumType(Category, {
 @Module({
   providers: [AppService],
   imports: [UserModule,OrganizationModule,PostModule,ProductModule,
-    PrismaAppModule,GraphqlModule],
+    PrismaAppModule,GraphqlModule,employeeModule,tagsModule,skillsModule],
 })
 export class AppModule {}

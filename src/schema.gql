@@ -50,12 +50,42 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type tagsModel {
+  id: String
+  name: String
+}
+
+type skillsModel {
+  id: String
+  name: String
+  tags: [tagsModel!]
+  count: Float
+}
+
+type employeeModel {
+  id: String
+  name: String
+  phone: String
+  email: String
+  DOJ: DateTime
+  DOB: DateTime
+  age: Float
+  skills: [skillsModel!]
+  tags: [tagsModel!]
+}
+
 type Query {
   getusers(id: String!): UserModel!
+  stringReturnType(id: String!): String!
   getOrganizations(id: String!): [OrganizationModel!]!
   posts: [PostModel!]!
   getProducts: [ProductModel!]!
   getCategoryFilter(filter: CategoryFilter): [ProductModel!]!
+  getemployee(filter: skillsFilter): [employeeModel!]!
+  getemployeecount: Float!
+  TAgCount: [skillsModel!]!
+  gettags(id: String!): [tagsModel!]!
+  getskills(id: String!): [skillsModel!]!
 }
 
 input CategoryFilter {
@@ -63,6 +93,11 @@ input CategoryFilter {
   category: Category
   createdAt: DateTime
   updatedAt: DateTime
+}
+
+input skillsFilter {
+  search: String
+  skillId: String
 }
 
 type Mutation {
@@ -78,6 +113,15 @@ type Mutation {
   createProduct(data: ProductDto!): ProductModel!
   updateProduct(id: String!, input: ProductDto!): ProductModel!
   deleteProduct(id: String!): ProductModel!
+  createemployee(data: employeeDto!): employeeModel!
+  updateemployee(id: String!, input: employeeDto!): employeeModel!
+  deleteemployee(id: String!): employeeModel!
+  createtags(data: tagsDto!): tagsModel!
+  updatetags(id: String!, input: tagsDto!): tagsModel!
+  deletetags(id: String!): tagsModel!
+  createskills(data: skillsDto!): skillsModel!
+  updateskills(id: String!, input: skillsDto!): skillsModel!
+  deleteskills(id: String!): skillsModel!
 }
 
 input UserDto {
@@ -106,4 +150,22 @@ input ProductDto {
   price: Float
   category: [Category!]
   userId: String
+}
+
+input employeeDto {
+  name: String
+  phone: String
+  email: String
+  DOJ: DateTime
+  DOB: DateTime
+  skillsId: [String!]
+}
+
+input tagsDto {
+  name: String
+}
+
+input skillsDto {
+  name: String
+  tagsId: String
 }

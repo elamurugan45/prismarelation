@@ -58,4 +58,8 @@ export class UserService {
       }
     }) as unknown as UserModel;
   }
+
+  async stringReturnType(id: string): Promise<string>{
+    if (id) return 'user created'
+  }
 }
