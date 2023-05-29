@@ -89,7 +89,7 @@ data});
         },
         {
           $lookup: {
-            from: "Skill",
+            from: "skills",
             localField: "skillsId",
             foreignField: "_id",
             as: "skill",
@@ -104,7 +104,7 @@ data});
         {
           $project: {
             _id: "$skill._id",
-            Name: "$skill.Name",
+            name: "$skill.name",
             count: "$count",
           },
         },
@@ -112,7 +112,7 @@ data});
           $group: {
             _id: {
               _id: "$_id",
-              Name: "$Name",
+              name: "$name",
             },
             count: {
               $count: {},
@@ -123,7 +123,7 @@ data});
           $project: {
             _id: "$_id._id",
             count: "$count",
-            Name: "$_id.Name",
+            name: "$_id.name",
           },
         },
       ]
