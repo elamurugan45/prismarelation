@@ -53,6 +53,7 @@ scalar DateTime
 type tagsModel {
   id: String
   name: String
+  count: Float
 }
 
 type skillsModel {
@@ -83,7 +84,8 @@ type Query {
   getCategoryFilter(filter: CategoryFilter): [ProductModel!]!
   getemployee(filter: skillsFilter): [employeeModel!]!
   getemployeecount: Float!
-  TAgCount: [skillsModel!]!
+  skillCount: [skillsModel!]!
+  tagCount: [skillsModel!]!
   gettags(id: String!): [tagsModel!]!
   getskills(id: String!): [skillsModel!]!
 }
@@ -159,6 +161,7 @@ input employeeDto {
   DOJ: DateTime
   DOB: DateTime
   skillsId: [String!]
+  tagsId: [String!]
 }
 
 input tagsDto {

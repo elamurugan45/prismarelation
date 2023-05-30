@@ -20,6 +20,9 @@ export class employeeDto {
 
   @Field(()=> [String], { nullable: true })
   skillsId: string[];
+
+  @Field(()=> [String], { nullable: true })
+  tagsId: string[];
 }
 
 

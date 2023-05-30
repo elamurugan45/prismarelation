@@ -40,6 +40,10 @@ export class employeeCount {
   @Field(() => [String])
   skills: string[];
 
+  @Field(() => [String])
+  tags: string[];
+
+
   @Field(() => Float)
   count: number;
 }

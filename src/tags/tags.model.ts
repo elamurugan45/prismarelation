@@ -8,4 +8,7 @@ export class tagsModel {
 
   @Field({ nullable: true })
   name?: string;
+
+  @Field({ nullable: true })
+  count?: number;
 }
