@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { tagsModel } from './tags.model';
 import { tagsDto } from './tags.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { Types } from '@prisma/client/runtime';
 
 
@@ -19,7 +19,7 @@ export class tagsService {
     const tags = await this.prisma.tags.create({
       data
     });
-    return tags as unknown as tagsModel;
+    return tags ;
   }
 
   async update(id: string, data: tagsDto): Promise<tagsModel> {
@@ -29,16 +29,16 @@ export class tagsService {
         id
       },
       data});
-    return tags as unknown as unknown as tagsModel;
+    return tags ;
   }
   async gettags(id:string): Promise<tagsModel[]> {
-    const users = await this.prisma.tags.findMany({
+    const tags = await this.prisma.tags.findMany({
       where: {
         id
       }
       }
     );
-    return users as unknown as tagsModel[]
+    return tags 
   }
   async delete(id: string): Promise<tagsModel> {
     return await this.prisma.tags.update({
@@ -48,6 +48,6 @@ export class tagsService {
       data: {
         archived: true
       }
-    }) as unknown as tagsModel;
+    }) ;
   }
 }

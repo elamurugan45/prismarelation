@@ -1,11 +1,11 @@
 import { ObjectType, Field, ID, Float } from '@nestjs/graphql';
-import { skillsModel } from 'src/skills/skills.model';
-import { tagsModel } from 'src/tags/tags.model';
+import { skillsModel } from '../skills/skills.model';
+import { tagsModel } from '../tags/tags.model';
 
 @ObjectType()
 export class employeeModel {
   @Field({ nullable: true })
-  id?: string;
+  id: string;
 
   @Field({ nullable: true })
   name?: string;
@@ -14,23 +14,23 @@ export class employeeModel {
   phone?: string;
 
   @Field({ nullable: true })
-  email: string;
+  email?: string;
 
   @Field({ nullable: true })
-  DOJ: Date;
+  DOJ?: Date;
 
   @Field({ nullable: true })
-  DOB: Date;
+  DOB?: Date;
  
   @Field({ nullable: true })
-  age: number;
+  age?: number;
   
 
   @Field(() => [skillsModel], { nullable: true })
-  skills: skillsModel[];
+  skills?: skillsModel[];
 
   @Field(() => [tagsModel], { nullable: true })
-  tags: tagsModel[];
+  tags?: tagsModel[];
   
  
 }
@@ -38,12 +38,12 @@ export class employeeModel {
 @ObjectType()
 export class employeeCount {
   @Field(() => [String])
-  skills: string[];
+  skills?: string[];
 
   @Field(() => [String])
-  tags: string[];
+  tags?: string[];
 
 
   @Field(() => Float)
-  count: number;
+  employeecount?: number;
 }

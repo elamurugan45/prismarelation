@@ -2,8 +2,8 @@ import { Resolver, Args, Mutation, Query, ID, Float,ResolveField, Parent} from '
 import { employeeCount, employeeModel } from './employee.model';
 import { employeeService } from './employee.service';
 import { employeeDto, skillsFilter } from './employee.dto';
-import { skillsModel } from 'src/skills/skills.model';
-import { tagsModel } from 'src/tags/tags.model';
+import { skillsModel } from '../skills/skills.model';
+import { tagsModel } from '../tags/tags.model';
 
 @Resolver(() => employeeModel)
 export class employeeResolver {

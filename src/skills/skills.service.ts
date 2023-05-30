@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { skillsModel } from './skills.model';
 import { skillsDto } from './skills.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { Types } from '@prisma/client/runtime';
 
 
@@ -24,7 +24,7 @@ export class skillsService {
         }
       }
     });
-    return skills as unknown as skillsModel;
+    return skills ;
   }
 
   async update(id: string, data: skillsDto): Promise<skillsModel> {
@@ -36,17 +36,17 @@ export class skillsService {
       include: {
         tags: true
     },data});
-    return skills as unknown as unknown as skillsModel;
+    return skills;
   }
   async getskills(id:string): Promise<skillsModel[]> {
-    const users = await this.prisma.skills.findMany({
+    const skills = await this.prisma.skills.findMany({
       where: {
         id
       }, include: {
         tags: true
       }
     });
-    return users as unknown as skillsModel[]
+    return skills 
   }
   async delete(id: string): Promise<skillsModel> {
     return await this.prisma.skills.update({
@@ -56,6 +56,6 @@ export class skillsService {
       data: {
         archived: true
       }
-    }) as unknown as skillsModel;
+    });
   }
 }

@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { Prisma, PrismaClient } from '@prisma/client';
 import { employeeModel } from './employee.model';
 import { employeeDto, skillsFilter } from './employee.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { Types } from '@prisma/client/runtime';
-import { skillsModel } from 'src/skills/skills.model';
-import { tagsModel } from 'src/tags/tags.model';
+import { skillsModel } from '../skills/skills.model';
+import { tagsModel } from '../tags/tags.model';
 
 
 @Injectable()
@@ -26,7 +26,7 @@ export class employeeService {
         }
       }
     });
-    return employee as unknown as employeeModel;
+    return employee;
   }
 
   async update(id: string, data: employeeDto): Promise<employeeModel> {
@@ -35,7 +35,7 @@ export class employeeService {
       where: {
         id},
 data});
-    return employee as unknown as unknown as employeeModel;
+    return employee;
   }
   async getemployee(filter): Promise<employeeModel[]> {
 
@@ -48,7 +48,7 @@ data});
       }}
 
 
-    const users = await this.prisma.employee.findMany({
+    const employee = await this.prisma.employee.findMany({
       where: {
         ...filterQuery,
         archived:false,
@@ -58,7 +58,7 @@ data});
       },
       orderBy:[{ name:'desc'},{id:'asc'}]
     });
-    return users as unknown as employeeModel[]
+    return employee;
   }}
   async delete(id: string): Promise<employeeModel> {
     return await this.prisma.employee.update({
@@ -68,7 +68,7 @@ data});
       data: {
         archived: true
       }
-    }) as unknown as employeeModel;
+    });
   }
 
   async count():Promise<Number>{
