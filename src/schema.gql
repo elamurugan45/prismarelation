@@ -53,14 +53,14 @@ scalar DateTime
 type tagsModel {
   id: String
   name: String
-  count: Float
+  employeeCount: Float
 }
 
 type skillsModel {
   id: String
   name: String
   tags: [tagsModel!]
-  count: Float
+  employeeCount: Float
 }
 
 type employeeModel {
@@ -98,7 +98,6 @@ input CategoryFilter {
 }
 
 input skillsFilter {
-  search: String
   skillId: String
 }
 

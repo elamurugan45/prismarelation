@@ -13,5 +13,5 @@ export class skillsModel {
   tags: tagsModel[];
 
   @Field({ nullable: true })
-  count?: number;
+  employeeCount?: number;
 }

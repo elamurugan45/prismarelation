@@ -82,6 +82,11 @@ data});
     const skillWithCount = await this.prisma.employee.aggregateRaw({
       pipeline: [
         {
+          $match:{
+            archived:false,
+          },
+        },
+        {
           $unwind: {
             path: "$skillsId",
             includeArrayIndex: "string",
@@ -103,10 +108,15 @@ data});
           },
         },
         {
+          $match:{
+            'skill.archived':false,
+          },
+        },
+        {
           $project: {
             _id: "$skill._id",
             name: "$skill.name",
-            count: "$count",
+            employeeCount: "$count",
           },
         },
         {
@@ -122,8 +132,8 @@ data});
         },
         {
           $project: {
-            _id: "$_id._id",
-            count: "$count",
+            id: {$toString:"$_id._id"},
+            employeeCount: "$count",
             name: "$_id.name",
           },
         },
@@ -141,6 +151,11 @@ data});
     const TagWithCount = await this.prisma.employee.aggregateRaw({
       pipeline: [
         {
+          $match:{
+            archived:false,
+          },
+        },
+        {
           $lookup: {
             from: 'skills',
             localField: 'skillsId',
@@ -152,6 +167,11 @@ data});
           $unwind: {
             path: '$skills',
             preserveNullAndEmptyArrays: true,
+          },
+        },
+        {
+          $match:{
+            'skills.archived':false,
           },
         },
         {
@@ -169,6 +189,11 @@ data});
           },
         },
         {
+          $match:{
+            'tags.archived':false,
+          },
+        },
+        {
           $group: {
             _id: {
               tagsId: '$tags',
@@ -180,8 +205,9 @@ data});
         },
         {
           $project: {
+            id:{$toString:'$_id.tagsId._id'},
             name: '$_id.tagsId.name',
-            count: '$count',
+            employeeCount: '$count',
           },
         },
       ],

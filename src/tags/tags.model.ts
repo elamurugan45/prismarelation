@@ -10,5 +10,5 @@ export class tagsModel {
   name?: string;
 
   @Field({ nullable: true })
-  count?: number;
+  employeeCount?: number;
 }
