@@ -87,7 +87,7 @@ type Query {
   skillCount: [skillsModel!]!
   tagCount: [skillsModel!]!
   gettags(id: String!): [tagsModel!]!
-  getskills(id: String!): [skillsModel!]!
+  getskills(id: String): [skillsModel!]!
 }
 
 input CategoryFilter {
@@ -122,7 +122,7 @@ type Mutation {
   deletetags(id: String!): tagsModel!
   createskills(data: skillsDto!): skillsModel!
   updateskills(id: String!, input: skillsDto!): skillsModel!
-  deleteskills(id: String!): skillsModel!
+  deleteskills(id: String): skillsModel!
 }
 
 input UserDto {

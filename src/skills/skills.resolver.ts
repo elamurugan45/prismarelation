@@ -2,6 +2,7 @@ import { Resolver, Args, Mutation, Query, ID } from '@nestjs/graphql';
 import { skillsModel } from './skills.model';
 import { skillsService } from './skills.service';
 import { skillsDto } from './skills.dto';
+import { GetArgs } from './skills.args';
 
 @Resolver(() => skillsModel)
 export class skillsResolver {
@@ -18,11 +19,11 @@ export class skillsResolver {
   }
 
   @Query(() => [skillsModel])
-  async getskills(@Args('id')id:string): Promise<skillsModel[]> {
+  async getskills(@Args() id:GetArgs): Promise<skillsModel[]> {
     return await this.skillsService.getskills(id);
   }
   @Mutation(() =>skillsModel)
-  async deleteskills(@Args('id') id: string): Promise<skillsModel> {
+  async deleteskills(@Args() id:GetArgs): Promise<skillsModel> {
     return await this.skillsService.delete(id);
   }
 
