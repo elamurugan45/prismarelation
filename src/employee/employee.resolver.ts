@@ -1,18 +1,18 @@
 import { Resolver, Args, Mutation, Query, ID, Float,ResolveField, Parent} from '@nestjs/graphql';
-import { employeeCount, employeeModel } from './employee.model';
 import { employeeService } from './employee.service';
-import { employeeDto, skillsFilter } from './employee.dto';
-import { skillsModel } from 'src/skills/skills.model';
-import { tagsModel } from 'src/tags/tags.model';
+import { EmployeeModel } from './employee.model';
+import { EmployeeDto, SkillFilter } from './employee.dto';
+import { SkillsModel } from '../skills/skills.model';
+import { TagsModel } from '../tags/tags.model';
 
-@Resolver(() => employeeModel)
+@Resolver(() => EmployeeModel)
 export class employeeResolver {
   constructor(private readonly employeeService: employeeService) { }
 
 
 
   @ResolveField(() => Float)
-  async age(@Parent() employee: employeeModel): Promise<number> {
+  async age(@Parent() employee: EmployeeModel): Promise<number> {
     const DOB = employee.DOB;
     const currentDate = new Date();
     const birthDate = new Date(DOB);
@@ -29,23 +29,30 @@ export class employeeResolver {
   }
 
 
-  @Mutation(() => employeeModel)
-  async createemployee(@Args('data') data: employeeDto) {
+  @Mutation(() => EmployeeModel)
+  async createemployee(@Args('data') data: EmployeeDto) {
     return await this.employeeService.createemployee(data);
   }
 
-  @Mutation(() => employeeModel)
-  async updateemployee(@Args('id') id: string, @Args('input') input: employeeDto): Promise<employeeModel> {
+  @Mutation(() => EmployeeModel)
+  async updateemployee(@Args('id') id: string, @Args('input') input: EmployeeDto): Promise<EmployeeModel> {
     return await this.employeeService.update(id, input);
   }
 
-  @Query(() => [employeeModel])
-  async getemployee(@Args('filter', { nullable: true }) filter: skillsFilter): Promise<employeeModel[]> {
+  @Query(() => EmployeeModel)
+  async getEmployee(@Args('id') id: string): Promise<EmployeeModel> {
+    return await this.employeeService.getEmployee(id);
+  }
+
+  @Query(() => [EmployeeModel])
+  async getemployee(@Args('filter',{nullable:true}) filter?: SkillFilter): Promise<EmployeeModel[]> {
+    console.log(filter)
     return await this.employeeService.getemployee(filter);
+
     
   }
-  @Mutation(() =>employeeModel)
-  async deleteemployee(@Args('id') id: string): Promise<employeeModel> {
+  @Mutation(() =>EmployeeModel)
+  async deleteemployee(@Args('id') id: string): Promise<EmployeeModel> {
     return await this.employeeService.delete(id);
   }
   
@@ -54,13 +61,13 @@ export class employeeResolver {
     return await this.employeeService.count()
   }
 
-  @Query(() => [skillsModel])
-  async skillCount(): Promise<skillsModel[]> {
+  @Query(() => [SkillsModel])
+  async skillCount(): Promise<SkillsModel[]> {
     return await this.employeeService.getTopSkillsWithCount();
   }
 
-  @Query(() => [skillsModel])
-  async tagCount(): Promise<tagsModel[]> {
+  @Query(() => [SkillsModel])
+  async tagCount(): Promise<TagsModel[]> {
     return await this.employeeService.gettagsWithCount();
   }
 }

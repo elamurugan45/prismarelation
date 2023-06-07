@@ -9,6 +9,6 @@ export class AppService {
   constructor(private readonly prisma: PrismaService) {}
 
   async findMany() {
-    return this.prisma.user.findMany();
+    return this.prisma.employee.findMany();
   }
 }

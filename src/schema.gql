@@ -2,68 +2,20 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type OrganizationModel {
-  id: String
-  name: String
-  email: String
-  phone: String
-  address: String
-  user: [UserModel!]
-}
-
-type UserModel {
-  id: String
-  name: String
-  email: String
-  password: String
-  organizationId: [String!]
-  organization: [OrganizationModel!]
-}
-
-type PostModel {
-  id: String
-  title: String
-  content: String
-  userId: String
-  user: UserModel
-}
-
-type ProductModel {
-  id: String
-  name: String
-  price: Float
-  category: [Category!]!
-  userId: String
-  user: UserModel
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-enum Category {
-  ELECTRONICS
-  BOOKS
-  CLOTHING
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type tagsModel {
+type TagsModel {
   id: String
   name: String
   employeeCount: Float
 }
 
-type skillsModel {
+type SkillsModel {
   id: String
   name: String
-  tags: [tagsModel!]
+  tags: [TagsModel!]
   employeeCount: Float
 }
 
-type employeeModel {
+type EmployeeModel {
   id: String
   name: String
   phone: String
@@ -71,103 +23,55 @@ type employeeModel {
   DOJ: DateTime
   DOB: DateTime
   age: Float
-  skills: [skillsModel!]
-  tags: [tagsModel!]
+  skills: [SkillsModel!]
+  tags: [TagsModel!]
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type Query {
-  getusers(id: String!): UserModel!
-  stringReturnType(id: String!): String!
-  getOrganizations(id: String!): [OrganizationModel!]!
-  posts: [PostModel!]!
-  getProducts: [ProductModel!]!
-  getCategoryFilter(filter: CategoryFilter): [ProductModel!]!
-  getemployee(filter: skillsFilter): [employeeModel!]!
+  getEmployee(id: String!): EmployeeModel!
+  getemployee(filter: SkillFilter): [EmployeeModel!]!
   getemployeecount: Float!
-  skillCount: [skillsModel!]!
-  tagCount: [skillsModel!]!
-  gettags(id: String!): [tagsModel!]!
-  getskills(id: String!): [skillsModel!]!
+  skillCount: [SkillsModel!]!
+  tagCount: [SkillsModel!]!
+  gettags: [TagsModel!]!
+  getskills: [SkillsModel!]!
 }
 
-input CategoryFilter {
-  search: String
-  category: Category
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-input skillsFilter {
+input SkillFilter {
   skillId: String
 }
 
 type Mutation {
-  createUser(data: UserDto!): UserModel!
-  updateUser(id: String!, input: UserDto!): UserModel!
-  deleteuser(id: String!): UserModel!
-  createOrganization(data: OrganizationDto!): OrganizationModel!
-  updateOrganization(id: String!, input: OrganizationDto!): OrganizationModel!
-  deleteorganization(id: String!): OrganizationModel!
-  createPost(data: PostDto!): PostModel!
-  updatePost(id: String!, input: PostDto!): PostModel!
-  deletePost(id: String!): PostModel!
-  createProduct(data: ProductDto!): ProductModel!
-  updateProduct(id: String!, input: ProductDto!): ProductModel!
-  deleteProduct(id: String!): ProductModel!
-  createemployee(data: employeeDto!): employeeModel!
-  updateemployee(id: String!, input: employeeDto!): employeeModel!
-  deleteemployee(id: String!): employeeModel!
-  createtags(data: tagsDto!): tagsModel!
-  updatetags(id: String!, input: tagsDto!): tagsModel!
-  deletetags(id: String!): tagsModel!
-  createskills(data: skillsDto!): skillsModel!
-  updateskills(id: String!, input: skillsDto!): skillsModel!
-  deleteskills(id: String!): skillsModel!
+  createemployee(data: EmployeeDto!): EmployeeModel!
+  updateemployee(id: String!, input: EmployeeDto!): EmployeeModel!
+  deleteemployee(id: String!): EmployeeModel!
+  createtags(data: TagsDto!): TagsModel!
+  updatetags(id: String!, input: TagsDto!): TagsModel!
+  deletetags(id: String!): TagsModel!
+  createskills(data: SkillsDto!): SkillsModel!
+  updateskills(id: String!, input: SkillsDto!): SkillsModel!
+  deleteSkill(id: String!): SkillsModel!
 }
 
-input UserDto {
-  name: String
-  password: String
-  email: String
-  organizationId: [String!]!
-}
-
-input OrganizationDto {
-  name: String
-  email: String
-  phone: String
-  address: String
-  userId: String
-}
-
-input PostDto {
-  title: String
-  content: String
-  userId: String
-}
-
-input ProductDto {
-  name: String
-  price: Float
-  category: [Category!]
-  userId: String
-}
-
-input employeeDto {
+input EmployeeDto {
   name: String
   phone: String
   email: String
   DOJ: DateTime
   DOB: DateTime
   skillsId: [String!]
+}
+
+input TagsDto {
+  name: String
+}
+
+input SkillsDto {
+  name: String
   tagsId: [String!]
-}
-
-input tagsDto {
-  name: String
-}
-
-input skillsDto {
-  name: String
-  tagsId: String
 }

@@ -7,5 +7,6 @@ import { employeeService } from './employee.service';
 @Module({
   imports: [],
   providers: [employeeResolver, employeeService],
+  exports:[employeeService]
 })
 export class employeeModule { }

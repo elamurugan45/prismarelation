@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, PrismaClient } from '@prisma/client';
-import { employeeModel } from './employee.model';
-import { employeeDto, skillsFilter } from './employee.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { Types } from '@prisma/client/runtime';
-import { skillsModel } from 'src/skills/skills.model';
-import { tagsModel } from 'src/tags/tags.model';
+import { EmployeeDto, SkillFilter } from './employee.dto';
+import { EmployeeModel } from './employee.model';
+import { SkillsModel } from '../skills/skills.model';
+import { TagsModel } from '../tags/tags.model';
 
 
 @Injectable()
@@ -16,51 +16,63 @@ export class employeeService {
   constructor(private readonly prisma: PrismaService) { }
 
 
-  async createemployee(data: employeeDto): Promise<employeeModel> {
+  async createemployee(data: EmployeeDto): Promise<EmployeeModel> {
 
     const employee = await this.prisma.employee.create({
-      data:{
+      data: {
         ...data,
-        skillsId:{
-          set:data?.skillsId
+        skillsId: {
+          set: data?.skillsId
         }
       }
     });
-    return employee as unknown as employeeModel;
+    return employee;
   }
 
-  async update(id: string, data: employeeDto): Promise<employeeModel> {
+  async update(id: string, data: EmployeeDto): Promise<EmployeeModel> {
 
     const employee = await this.prisma.employee.update({
       where: {
-        id},
-data});
-    return employee as unknown as unknown as employeeModel;
+        id
+      },
+      data
+    });
+    return employee;
   }
-  async getemployee(filter): Promise<employeeModel[]> {
 
-  let filterQuery: Prisma.employeeWhereInput
+  async getEmployee(id: string): Promise<EmployeeModel> {
+    return (await this.prisma.employee.findUnique({
+      where: { id: id },
+      include: {
+        skills: true,
+      },
+    }));
+  }
+
+  async getemployee(filter?: SkillFilter): Promise<EmployeeModel[]> {
+
+    let filterQuery: Prisma.EmployeeWhereInput = {};
     if (filter?.skillId) {
       filterQuery = {
-      ...filterQuery,
-      skillsId:{
-        hasSome:filter?.skillId
-      }}
-
-
-    const users = await this.prisma.employee.findMany({
+        ...filterQuery,
+        skillsId: {
+          hasSome: filter?.skillId,
+        }
+      }
+    }
+    const employee = await this.prisma.employee.findMany({
       where: {
         ...filterQuery,
-        archived:false,
+        archived: false,
       }, include: {
         skills: true,
-        tags:true,
       },
-      orderBy:[{ name:'desc'},{id:'asc'}]
+      orderBy: [{ name: 'desc' }]
     });
-    return users as unknown as employeeModel[]
-  }}
-  async delete(id: string): Promise<employeeModel> {
+    console.log(employee)
+    return employee;
+  }
+  async delete(id: string): Promise<EmployeeModel> {
     return await this.prisma.employee.update({
       where: {
         id
@@ -68,22 +80,22 @@ data});
       data: {
         archived: true
       }
-    }) as unknown as employeeModel;
+    });
   }
 
-  async count():Promise<Number>{
+  async count(): Promise<Number> {
     return await this.prisma.employee.count({
-      where:{
-        archived:false,
+      where: {
+        archived: false,
       }
     })
   }
-  async getTopSkillsWithCount(): Promise<skillsModel[]> {
+  async getTopSkillsWithCount(): Promise<SkillsModel[]> {
     const skillWithCount = await this.prisma.employee.aggregateRaw({
       pipeline: [
         {
-          $match:{
-            archived:false,
+          $match: {
+            archived: false,
           },
         },
         {
@@ -95,7 +107,7 @@ data});
         },
         {
           $lookup: {
-            from: "skills",
+            from: "Skills",
             localField: "skillsId",
             foreignField: "_id",
             as: "skill",
@@ -108,8 +120,8 @@ data});
           },
         },
         {
-          $match:{
-            'skill.archived':false,
+          $match: {
+            'skill.archived': false,
           },
         },
         {
@@ -132,32 +144,32 @@ data});
         },
         {
           $project: {
-            id: {$toString:"$_id._id"},
+            id: { $toString: "$_id._id" },
             employeeCount: "$count",
             name: "$_id.name",
           },
         },
         {
-          $sort:{
-            count:-1
+          $sort: {
+            count: -1
           }
         }
       ]
     });
     console.log(skillWithCount);
-    return skillWithCount as unknown as skillsModel[];
+    return skillWithCount as unknown as SkillsModel[];
   }
-  async gettagsWithCount(): Promise<tagsModel[]> {
+  async gettagsWithCount(): Promise<TagsModel[]> {
     const TagWithCount = await this.prisma.employee.aggregateRaw({
       pipeline: [
         {
-          $match:{
-            archived:false,
+          $match: {
+            archived: false,
           },
         },
         {
           $lookup: {
-            from: 'skills',
+            from: 'Skills',
             localField: 'skillsId',
             foreignField: '_id',
             as: 'skills',
@@ -170,13 +182,13 @@ data});
           },
         },
         {
-          $match:{
-            'skills.archived':false,
+          $match: {
+            'skills.archived': false,
           },
         },
         {
           $lookup: {
-            from: 'tags',
+            from: 'Tags',
             localField: 'skills.tagsId',
             foreignField: '_id',
             as: 'tags',
@@ -189,8 +201,8 @@ data});
           },
         },
         {
-          $match:{
-            'tags.archived':false,
+          $match: {
+            'tags.archived': false,
           },
         },
         {
@@ -205,7 +217,7 @@ data});
         },
         {
           $project: {
-            id:{$toString:'$_id.tagsId._id'},
+            id: { $toString: '$_id.tagsId._id' },
             name: '$_id.tagsId.name',
             employeeCount: '$count',
           },
@@ -213,7 +225,7 @@ data});
       ],
     });
     console.log(TagWithCount);
-    return TagWithCount as unknown as tagsModel[];
+    return TagWithCount as unknown as TagsModel[];
   }
 }
 

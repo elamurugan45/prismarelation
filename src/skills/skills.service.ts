@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import { skillsModel } from './skills.model';
-import { skillsDto } from './skills.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { Types } from '@prisma/client/runtime';
+import { GetArgs } from './skills.args';
+import { SkillsDto } from './skills.dto';
+import { SkillsModel } from './skills.model';
 
 
 @Injectable()
@@ -14,7 +15,7 @@ export class skillsService {
   constructor(private readonly prisma: PrismaService) { }
 
 
-  async createskills(data: skillsDto): Promise<skillsModel> {
+  async createskills(data: SkillsDto): Promise<SkillsModel> {
 
     const skills = await this.prisma.skills.create({
       data:{
@@ -24,10 +25,10 @@ export class skillsService {
         }
       }
     });
-    return skills as unknown as skillsModel;
+    return skills ;
   }
 
-  async update(id: string, data: skillsDto): Promise<skillsModel> {
+  async update(id: string, data: SkillsDto): Promise<SkillsModel> {
 
     const skills = await this.prisma.skills.update({
       where: {
@@ -36,26 +37,25 @@ export class skillsService {
       include: {
         tags: true
     },data});
-    return skills as unknown as unknown as skillsModel;
+    return skills;
   }
-  async getskills(id:string): Promise<skillsModel[]> {
-    const users = await this.prisma.skills.findMany({
+  async getskills(): Promise<SkillsModel[]> {
+    console.log()
+    const skills = await this.prisma.skills.findMany({
       where: {
-        id
+        archived:false
       }, include: {
         tags: true
       }
     });
-    return users as unknown as skillsModel[]
+    return skills 
   }
-  async delete(id: string): Promise<skillsModel> {
+  async deleteSkill(id: string): Promise<SkillsModel> {
     return await this.prisma.skills.update({
-      where: {
-        id
-      },
+      where: { id },
       data: {
-        archived: true
-      }
-    }) as unknown as skillsModel;
+        archived: true,
+      },
+    });
   }
 }

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import { tagsModel } from './tags.model';
-import { tagsDto } from './tags.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { Types } from '@prisma/client/runtime';
+import { TagsDto } from './tags.dto';
+import { TagsModel } from './tags.model';
 
 
 @Injectable()
@@ -14,33 +14,33 @@ export class tagsService {
   constructor(private readonly prisma: PrismaService) { }
 
 
-  async createtags(data: tagsDto): Promise<tagsModel> {
+  async createtags(data: TagsDto): Promise<TagsModel> {
 
     const tags = await this.prisma.tags.create({
       data
     });
-    return tags as unknown as tagsModel;
+    return tags ;
   }
 
-  async update(id: string, data: tagsDto): Promise<tagsModel> {
+  async update(id: string, data: TagsDto): Promise<TagsModel> {
 
     const tags = await this.prisma.tags.update({
       where: {
         id
       },
       data});
-    return tags as unknown as unknown as tagsModel;
+    return tags ;
   }
-  async gettags(id:string): Promise<tagsModel[]> {
-    const users = await this.prisma.tags.findMany({
+  async gettags(): Promise<TagsModel[]> {
+    const tags = await this.prisma.tags.findMany({
       where: {
-        id
+archived:false
       }
       }
     );
-    return users as unknown as tagsModel[]
+    return tags 
   }
-  async delete(id: string): Promise<tagsModel> {
+  async delete(id: string): Promise<TagsModel> {
     return await this.prisma.tags.update({
       where: {
         id
@@ -48,6 +48,6 @@ export class tagsService {
       data: {
         archived: true
       }
-    }) as unknown as tagsModel;
+    }) ;
   }
 }
