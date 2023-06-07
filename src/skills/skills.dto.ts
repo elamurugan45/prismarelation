@@ -1,11 +1,11 @@
 import { InputType, Field } from '@nestjs/graphql';
 
 @InputType()
-export class skillsDto {
-  @Field(() => String, { nullable: true })
+export class SkillsDto {
+  @Field( { nullable: true })
   name?: string;
 
-  @Field(()=> String, { nullable: true })
-  tagsId: string;
+  @Field(()=> [String], { nullable: true })
+  tagsId?: string[];
 
 }

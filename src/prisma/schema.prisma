@@ -10,101 +10,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id             String         @id @default(auto()) @map("_id") @db.ObjectId
-  name           String?
-  email          String?
-  password       String?
-  archived       Boolean        @default(false)
-  createdAt      DateTime       @default(now()) @db.Date
-  updatedAt      DateTime       @updatedAt
-  // organizationId String[]       @db.ObjectId
-  // postIds        String[]      @db.ObjectId
-  // posts          Post[]
-  organization   Organization[] @relation(fields: [organizationId], references: [id])
-  organizationId String[]       @default([]) @db.ObjectId
-}
-
-model Organization {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String?
-  email     String?
-  phone     String?
-  address   String?
-  archived  Boolean  @default(false)
-  createdAt DateTime @default(now()) @db.Date
-  updatedAt DateTime @updatedAt
-
-  userId String[] @default([]) @db.ObjectId
-  user   User[]   @relation(fields: [userId], references: [id])
-  // user User?
-}
-
-// model UserOrganization{
-//   id               String  @id @default(auto()) @map("_id") @db.ObjectId
-//   userId           String
-//   organizationId   String
-//   user             User   @relation(fields: [userId], references: [id])
-//   organization   Organization @relation(fields: [organizationId], references: [id])
-//   createdAt DateTime @default(now()) @db.Date
-//   updatedAt DateTime @updatedAt
-// }
-
-model Post {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  title     String?
-  content   String?
-  createdAt DateTime @default(now()) @db.Date
-  updatedAt DateTime @updatedAt
-  archived  Boolean  @default(false)
-  // user      User?    @relation(fields: [userId], references: [id])
-  userId    String?  @db.ObjectId
-}
-
-model Product {
-  id        String     @id @default(auto()) @map("_id") @db.ObjectId
-  name      String?
-  price     Int?
-  createdAt DateTime   @default(now()) @db.Date
-  updatedAt DateTime   @updatedAt
-  archived  Boolean    @default(false)
-  category  category[]
-}
-
-enum category {
-  ELECTRONICS
-  BOOKS
-  CLOTHING
-}
 
 
-model skills {
+
+model Skills {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String?
   archived  Boolean    @default(false)
   createdAt DateTime   @default(now()) @db.Date
   updatedAt DateTime   @updatedAt
   tagsId String[] @default([]) @db.ObjectId
-  tags   tags[]   @relation(fields: [tagsId], references: [id])
+  tags   Tags[]   @relation(fields: [tagsId], references: [id])
   employeeId String[] @default([]) @db.ObjectId
-  employee   employee[]   @relation(fields: [employeeId], references: [id])
+  employee   Employee[]   @relation(fields: [employeeId], references: [id])
 }
 
 
-model tags {
+model Tags {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
   name     String?
   archived  Boolean    @default(false)
   createdAt DateTime   @default(now()) @db.Date
   updatedAt DateTime   @updatedAt
   skillsId String[] @default([]) @db.ObjectId
-  skills   skills[]   @relation(fields: [skillsId], references: [id])
+  skills   Skills[]   @relation(fields: [skillsId], references: [id])
   employeeId String[] @default([]) @db.ObjectId
-  employee   employee[]   @relation(fields: [employeeId], references: [id])
+  employee   Employee[]   @relation(fields: [employeeId], references: [id])
 }
 
 
-model employee{
+model Employee{
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
   name     String?
   phone    String?
@@ -115,7 +50,7 @@ model employee{
   createdAt DateTime   @default(now()) @db.Date
   updatedAt DateTime   @updatedAt
   skillsId String[] @default([]) @db.ObjectId
-  skills   skills[]   @relation(fields: [skillsId], references: [id])
+  skills   Skills[]   @relation(fields: [skillsId], references: [id])
   tagsId String[] @default([]) @db.ObjectId
-  tags   tags[]   @relation(fields: [tagsId], references: [id])
+  tags   Tags[]   @relation(fields: [tagsId], references: [id])
 }

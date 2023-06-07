@@ -1,33 +1,29 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { skillsModel } from 'src/skills/skills.model';
 
 @InputType()
-export class employeeDto {
+export class EmployeeDto {
   @Field(() => String, { nullable: true })
   name?: string;
 
   @Field(() => String, { nullable: true })
-  phone: string;
+  phone?: string;
 
   @Field(() => String, { nullable: true })
-  email: string;
+  email?: string;
   
   @Field(() => Date, { nullable: true })
-  DOJ: Date;
+  DOJ?: Date;
 
   @Field(() => Date, { nullable: true })
-  DOB: Date;
+  DOB?: Date;
 
   @Field(()=> [String], { nullable: true })
-  skillsId: string[];
-
-  @Field(()=> [String], { nullable: true })
-  tagsId: string[];
+  skillsId?: string[];
 }
 
 
 @InputType()
-export class skillsFilter {
+export class SkillFilter {
   
 
   @Field(() => String, { nullable: true })

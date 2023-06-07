@@ -37,7 +37,8 @@
     "luxon": "^3.3.0",
     "mongodb": "^5.5.0",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "ts-morph": "^18.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

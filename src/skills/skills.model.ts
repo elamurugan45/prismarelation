@@ -1,17 +1,17 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { tagsModel } from '../tags/tags.model';
+import { TagsModel,  } from '../tags/tags.model';
 
 
 @ObjectType()
-export class skillsModel {
+export class SkillsModel {
   @Field({ nullable: true })
   id: string;
 
   @Field({ nullable: true })
   name?: string;
 
-  @Field(() => [tagsModel], { nullable: true })
-  tags?: tagsModel[];
+  @Field(() => [TagsModel], { nullable: true })
+  tags?: TagsModel[];
 
   @Field({ nullable: true })
   employeeCount?: number;

@@ -1,30 +1,29 @@
 import { Resolver, Args, Mutation, Query, ID } from '@nestjs/graphql';
-import { skillsModel } from './skills.model';
 import { skillsService } from './skills.service';
-import { skillsDto } from './skills.dto';
 import { GetArgs } from './skills.args';
+import { SkillsModel } from './skills.model';
+import { SkillsDto } from './skills.dto';
 
-@Resolver(() => skillsModel)
+@Resolver(() => SkillsModel)
 export class skillsResolver {
   constructor(private readonly skillsService: skillsService) { }
 
-  @Mutation(() => skillsModel)
-  async createskills(@Args('data') data: skillsDto) {
+  @Mutation(() => SkillsModel)
+  async createskills(@Args('data') data: SkillsDto) {
     return await this.skillsService.createskills(data);
   }
 
-  @Mutation(() => skillsModel)
-  async updateskills(@Args('id') id: string, @Args('input') input: skillsDto): Promise<skillsModel> {
+  @Mutation(() => SkillsModel)
+  async updateskills(@Args('id') id: string, @Args('input') input: SkillsDto): Promise<SkillsModel> {
     return await this.skillsService.update(id, input);
   }
 
-  @Query(() => [skillsModel])
-  async getskills(@Args() id:GetArgs): Promise<skillsModel[]> {
-    return await this.skillsService.getskills(id);
+  @Query(() => [SkillsModel])
+  async getskills() : Promise<SkillsModel[]> {
+    return await this.skillsService.getskills();
   }
-  @Mutation(() =>skillsModel)
-  async deleteskills(@Args() id:GetArgs): Promise<skillsModel> {
-    return await this.skillsService.delete(id);
+  @Mutation(() => SkillsModel)
+  async deleteSkill(@Args('id') id: string): Promise<SkillsModel> {
+    return await this.skillsService.deleteSkill(id);
   }
-
 }
